@@ -1,0 +1,6 @@
+[
+    {"name": "Test Item 1", "id": "item1", "moreURL": "item1.json"},
+    {"name": "Test Item 2", "id": "item2", "moreURL": "item2.json"},
+    {"name": "Test Item 3", "id": "item3", "moreURL": "item3.json"},
+    {"name": "Test Item 4", "id": "item4", "moreURL": "item4.json"}
+]
