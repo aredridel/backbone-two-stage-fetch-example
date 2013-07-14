@@ -1,0 +1,6 @@
+[
+    {"name": "Test Item 1", "id": "item1", "moreURL": "item1.json", "details": "This took a while to load"},
+    {"name": "Test Item 2", "id": "item2", "moreURL": "item2.json", "details": "Really it did."},
+    {"name": "Test Item 3", "id": "item3", "moreURL": "item3.json", "details": "How about how?"},
+    {"name": "Test Item 4", "id": "item4", "moreURL": "item4.json", "details": "NOOYA!"}
+]

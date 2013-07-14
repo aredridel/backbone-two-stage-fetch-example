@@ -1,0 +1,76 @@
+<script src='http://zeptojs.com/zepto.js'></script>
+<script src='http://underscorejs.org/underscore.js'></script>
+<script src='http://backbonejs.org/backbone.js'></script>
+
+<script type='text/x-underscore' data-template='ListView'>
+    <ul>
+        <% this.collection.each(function (model) { %>
+            <li data-item='<%- model.get("id") %>'><%- model.get('name') %> (<%- model.get('id') %>)</li>
+        <% }) %>
+    </ul>
+</script>
+
+<script type='text/x-underscore' data-template='DetailView'>
+    <p>Name: <%- this.model.get('name') %></p>
+    <p>Detail: <%- this.model.get('details') ? this.model.get('details') : "Loading...." %></p>
+</script>
+
+<h1>List</h1>
+<div data-component='ListView'>
+</div>
+
+<h1>Details</h1>
+<div data-component='DetailView'>
+</div>
+
+<script>
+    var DetailView = Backbone.View.extend({
+        template: _.template($('[data-template=DetailView]').html().trim()),
+        initialize: function () {
+            this.listenTo(this.model, 'change', this.render);
+            this.render();
+        },
+        render: function () {
+            this.$el.html(this.template());
+        }
+    });
+
+    var ListView = Backbone.View.extend({
+        template: _.template($('[data-template=ListView]').html().trim()),
+        initialize: function () {
+            this.listenTo(this.collection, 'sync', this.render);
+        },
+        render: function () {
+            this.$el.html(this.template());
+
+        },
+        showItem: function(model) {
+            if (this.detailView) this.detailView.undelegateEvents();
+            this.detailView = new DetailView({model: model, el: $('[data-component=DetailView]')});
+        },
+        events: {
+            "click [data-item]": function (ev) {
+                this.showItem(this.collection.get(ev.target.getAttribute('data-item')));
+            }
+        }
+    });
+
+    var Item = Backbone.Model.extend({
+    });
+
+    var List = Backbone.Collection.extend({
+        url: 'items.json',
+        fetchDetail: function () {
+            setTimeout(function () {
+                this.fetch({url: 'items-full.json'});
+            }.bind(this), 3000);
+        },
+        model: Item
+    });
+
+    var list = new List();
+    var listView = new ListView({collection: list, el: $('[data-component=ListView]')});
+    list.fetch();
+    list.once('sync', list.fetchDetail);
+</script>
+
